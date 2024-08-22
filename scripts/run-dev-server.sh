@@ -40,8 +40,7 @@ wait_server_ready() {
 
 python_preconfigure
 source venv/bin/activate
-mlflow server --dev --app-name oidc-auth --host 0.0.0.0 --port 5000 &
-mlflow=$!
+mlflow server --app-name oidc-auth --host 0.0.0.0 --port 5000
 # wait_server_ready localhost:5000/health
 ui_preconfigure
 # yarn --cwd web-ui watch
