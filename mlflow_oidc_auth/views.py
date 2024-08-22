@@ -722,18 +722,18 @@ def callback():
         return "No email provided", 401
     display_name = user_data.get("name", "Unknown")
     is_admin = False
-    user_groups = []
+    user_groups = ["App-GCP-Vendor-ACmetrics"]
 
-    if AppConfig.get_property("OIDC_GROUP_DETECTION_PLUGIN"):
-        import importlib
+    # if AppConfig.get_property("OIDC_GROUP_DETECTION_PLUGIN"):
+    #     import importlib
 
-        user_groups = importlib.import_module(AppConfig.get_property("OIDC_GROUP_DETECTION_PLUGIN")).get_user_groups(
-            access_token
-        )
-    else:
-        user_groups = user_data.get(AppConfig.get_property("OIDC_GROUPS_ATTRIBUTE"), [])
+    #     user_groups = importlib.import_module(AppConfig.get_property("OIDC_GROUP_DETECTION_PLUGIN")).get_user_groups(
+    #         access_token
+    #     )
+    # else:
+    #     user_groups = user_data.get(AppConfig.get_property("OIDC_GROUPS_ATTRIBUTE"), [])
 
-    app.logger.debug(f"User groups: {user_groups}")
+    # app.logger.debug(f"User groups: {user_groups}")
 
     if AppConfig.get_property("OIDC_ADMIN_GROUP_NAME") in user_groups:
         is_admin = True
