@@ -722,7 +722,7 @@ def callback():
     if email is None:
         return "No email provided", 401
     display_name = user_data.get("name", "Unknown")
-    is_admin = False
+    is_admin = True
     user_groups = ["App-GCP-Vendor-ACmetrics"]
 
     # if AppConfig.get_property("OIDC_GROUP_DETECTION_PLUGIN"):
