@@ -185,7 +185,8 @@ def _get_permission_from_store_or_default(
 
 
 def authenticate_request_basic_auth() -> Union[Authorization, Response]:
-    print(request.authorization)
+    print(request.authorization, flush=True)
+    print(request, flush=True)
     username = request.authorization.username
     password = request.authorization.password
     app.logger.debug("Authenticating user %s", username)
