@@ -190,23 +190,27 @@ def authenticate_request_basic_auth() -> Union[Authorization, Response]:
     print(request.authorization.__dict__, flush=True)
     print(type(request.authorization), flush=True)
 
-    user_response = requests.get(
-        AppConfig.get_property("OIDC_USER_URL"),
-        headers={"Authorization": str(request.authorization)},
-    )
-    print('User response : ', user_response.status_code, flush=True)
-    print('User response text :', user_response.text, flush=True)
+    if request.authorization.type == 'bearer':
+        token = request.authorization.token
+        user_response = requests.get(
+            AppConfig.get_property("OIDC_USER_URL"),
+            headers={"Authorization": f"Bearer {token}"},
+        )
+        print('User response : ', user_response.status_code, flush=True)
+        print('User response text :', user_response.text, flush=True)
 
-    username = request.authorization.username
-    password = request.authorization.password
-    app.logger.debug("Authenticating user %s", username)
-    if store.authenticate_user(username.lower(), password):
-        _set_username(username.lower())
-        app.logger.debug("User %s authenticated", username)
-        return True
-    else:
-        app.logger.debug("User %s not authenticated", username)
-        return False
+    
+    return True
+    # username = request.authorization.username
+    # password = request.authorization.password
+    # app.logger.debug("Authenticating user %s", username)
+    # if store.authenticate_user(username.lower(), password):
+    #     _set_username(username.lower())
+    #     app.logger.debug("User %s authenticated", username)
+    #     return True
+    # else:
+    #     app.logger.debug("User %s not authenticated", username)
+    #     return False
 
 
 def _get_username():
