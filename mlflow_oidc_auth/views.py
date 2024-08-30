@@ -188,12 +188,12 @@ def authenticate_request_basic_auth() -> Union[Authorization, Response]:
     print(request.authorization, flush=True)
     print(request, flush=True)
 
-    if 'Bearer' in request.authorization:
-        user_response = requests.get(
-            AppConfig.get_property("OIDC_USER_URL"),
-            headers={"Authorization": request.authorization},
-        )
-        print(user_response, flush=True)
+    user_response = requests.get(
+        AppConfig.get_property("OIDC_USER_URL"),
+        headers={"Authorization": request.authorization},
+    )
+    print('User response :'user_response.status_code, flush=True)
+    print('User response text :'user_response.text, flush=True)
 
     username = request.authorization.username
     password = request.authorization.password
