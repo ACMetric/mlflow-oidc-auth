@@ -196,21 +196,28 @@ def authenticate_request_basic_auth() -> Union[Authorization, Response]:
             AppConfig.get_property("OIDC_USER_URL"),
             headers={"Authorization": f"Bearer {token}"},
         )
-        print('User response : ', user_response.status_code, flush=True)
-        print('User response text :', user_response.text, flush=True)
+        
+        email = user_response.json().get("email", None)
+        user_groups = ["App-GCP-Vendor-ACmetrics"]
 
+        create_user(username=email.lower(), display_name=email, is_admin=True)
+        store.populate_groups(group_names=user_groups)
+        # set user groups
+        store.set_user_groups(email.lower(), user_groups)
+        _set_username(email.lower())
     
-    return True
-    # username = request.authorization.username
-    # password = request.authorization.password
-    # app.logger.debug("Authenticating user %s", username)
-    # if store.authenticate_user(username.lower(), password):
-    #     _set_username(username.lower())
-    #     app.logger.debug("User %s authenticated", username)
-    #     return True
-    # else:
-    #     app.logger.debug("User %s not authenticated", username)
-    #     return False
+        return True
+    else:
+        username = request.authorization.username
+        password = request.authorization.password
+        app.logger.debug("Authenticating user %s", username)
+        if store.authenticate_user(username.lower(), password):
+            _set_username(username.lower())
+            app.logger.debug("User %s authenticated", username)
+            return True
+        else:
+            app.logger.debug("User %s not authenticated", username)
+            return False
 
 
 def _get_username():
