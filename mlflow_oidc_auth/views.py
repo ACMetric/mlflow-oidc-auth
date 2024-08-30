@@ -192,8 +192,8 @@ def authenticate_request_basic_auth() -> Union[Authorization, Response]:
         AppConfig.get_property("OIDC_USER_URL"),
         headers={"Authorization": request.authorization},
     )
-    print('User response :'user_response.status_code, flush=True)
-    print('User response text :'user_response.text, flush=True)
+    print('User response : ', user_response.status_code, flush=True)
+    print('User response text :', user_response.text, flush=True)
 
     username = request.authorization.username
     password = request.authorization.password
