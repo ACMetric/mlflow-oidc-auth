@@ -187,10 +187,12 @@ def _get_permission_from_store_or_default(
 def authenticate_request_basic_auth() -> Union[Authorization, Response]:
     print(request.authorization, flush=True)
     print(request, flush=True)
+    print(request.authorization.__dict__, flush=True)
+    print(type(request.authorization), flush=True)
 
     user_response = requests.get(
         AppConfig.get_property("OIDC_USER_URL"),
-        headers={"Authorization": request.authorization},
+        headers={"Authorization": str(request.authorization)},
     )
     print('User response : ', user_response.status_code, flush=True)
     print('User response text :', user_response.text, flush=True)
